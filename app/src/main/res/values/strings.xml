@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">EyeComforter</string>
+    <string name="bluelight_filter_level">Dimming Level</string>
+</resources>
