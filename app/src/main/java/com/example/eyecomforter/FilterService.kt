@@ -13,8 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 
-@Suppress("DEPRECATION")
-class FilterService : Service() {
+
+
+class BlueLightFilterService : Service() {
     //    private var mOverlayView: View? = null
     private var mOverlayView: OverlayView? = null
 
@@ -36,7 +37,7 @@ class FilterService : Service() {
 
             mOverlayView = OverlayView(this)
 
-            params = WindowManager.LayoutParams(
+            val params = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
@@ -52,12 +53,12 @@ class FilterService : Service() {
 
             // An alpha value to apply to this entire window.
             // An alpha of 1.0 means fully opaque and 0.0 means fully transparent
-            params?.alpha = 0.3f
+            params.alpha = 0.3f
 
             // When FLAG_DIM_BEHIND is set, this is the amount of dimming to apply.
             // Range is from 1.0 for completely opaque to 0.0 for no dim.
-            params?.dimAmount = 0f
-            params?.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+            params.dimAmount = 0f
+            params.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
 
 
             wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -103,3 +104,97 @@ class FilterService : Service() {
     }
 
 }
+
+
+//private ScreenFilter binder = new ScreenFilter();
+
+class FilterService : Service() {
+
+    private var mOverlayView: android.support.v7.widget.AppCompatImageView? = null
+
+    private var currentLevel = 0
+
+    private var params: WindowManager.LayoutParams? = null
+    private var wm: WindowManager? = null
+
+    override fun onBind(intent: Intent): IBinder? {
+        throw Exception("This service should not be bound.")
+    }
+
+
+    override fun onUnbind(intent: Intent): Boolean {
+        return super.onUnbind(intent)
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        Log.d(TAG, "onCreate")
+
+        params = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                    WindowManager.LayoutParams.FLAG_DIM_BEHIND,
+            PixelFormat.TRANSLUCENT
+        )
+
+        // An alpha value to apply to this entire window.
+        // An alpha of 1.0 means fully opaque and 0.0 means fully transparent
+        params!!.alpha = 0.3f
+
+        // When FLAG_DIM_BEHIND is set, this is the amount of dimming to apply.
+        // Range is from 1.0 for completely opaque to 0.0 for no dim.
+        params!!.dimAmount = 0f
+
+        wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        mOverlayView = inflater.inflate(R.layout.fiter_layout, null)
+
+        wm!!.addView(mOverlayView, params)
+    }
+
+
+    /**
+     * 改变agb值
+     * @return
+     */
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+
+        currentLevel = intent.getIntExtra("level", currentLevel)
+        //可以在更新alpha & dimAmount
+        //         params.alpha = (float) (currentLevel *5 / 1000.0);
+        //        params.dimAmount = (float) (currentLevel / 100.0);
+        mOverlayView!!.setBackgroundColor(
+            Color.rgb(
+                225,
+                225,
+                (255 - 255 * Math.sqrt(currentLevel * 1.0 / 100)).toInt()
+            )
+        )
+        wm!!.updateViewLayout(mOverlayView, params)
+        //粘性服务
+        return Service.START_REDELIVER_INTENT
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Log.d(TAG, "onDestroy")
+
+        wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm!!.removeView(mOverlayView)
+    }
+
+    companion object {
+
+        val TAG = "BlueLightFilterService"
+    }
+
+
+}
+

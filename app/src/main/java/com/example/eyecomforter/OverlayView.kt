@@ -18,7 +18,7 @@ class OverlayView(context: Context) : android.support.v7.widget.AppCompatImageVi
     private var color = Color.BLACK
         set(color) {
             if (this.color != color) {
-                Log.d(javaClass.simpleName, "Changing color to " + Integer.toHexString(color))
+                Log.d(TAG, "Changing color to " + Integer.toHexString(color))
             }
             mLoadPaint.color = color
 
@@ -27,7 +27,7 @@ class OverlayView(context: Context) : android.support.v7.widget.AppCompatImageVi
         }
 
     init {
-        Log.d(javaClass.simpleName, "OverlayView created")
+        Log.d(TAG, "OverlayView created")
 
         mLoadPaint = Paint()
         mLoadPaint.isAntiAlias = true
@@ -47,5 +47,9 @@ class OverlayView(context: Context) : android.support.v7.widget.AppCompatImageVi
         this.invalidate()
 
         return true
+    }
+
+    companion object{
+        private const val TAG = "OverlayView"
     }
 }
