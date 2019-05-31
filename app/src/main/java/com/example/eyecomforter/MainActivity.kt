@@ -12,8 +12,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
 
-    private var seekBar: SeekBar? = null
-
     private var floatWindowPermission = false
     private val FLOAT_WINDOW_REQUEST_CODE = 1
 
