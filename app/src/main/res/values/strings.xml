@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">EyeComforter</string>
     <string name="bluelight_filter_level">Dimming Level</string>
+    <string name="notification_content">Eye Ease</string>
 </resources>

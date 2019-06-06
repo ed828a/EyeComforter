@@ -3,9 +3,9 @@ package com.example.eyecomforter
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.support.v7.app.AppCompatActivity
 import android.widget.SeekBar
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
 
     private var floatWindowPermission = false
-    private val FLOAT_WINDOW_REQUEST_CODE = 1
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +21,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
         filterLevelSeekBar.setOnSeekBarChangeListener(this)
 
         checkPermission()
+
     }
 
 
@@ -66,6 +65,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
 
     private fun startBlueLightFilterService() {
         val intent = Intent(this, FilterService::class.java)
+        intent.action = Utility.START_FOREGROUND_ACTION
         startService(intent)
     }
 
@@ -80,4 +80,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+
+    companion object{
+        private const val FLOAT_WINDOW_REQUEST_CODE = 1
+    }
 }
