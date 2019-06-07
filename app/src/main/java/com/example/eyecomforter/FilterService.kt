@@ -4,8 +4,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
@@ -17,17 +15,16 @@ import android.view.Gravity
 import android.view.WindowManager
 import android.widget.RemoteViews
 import com.example.eyecomforter.Utility.ACTION_REQUEST_CODE
-import com.example.eyecomforter.Utility.ACTION_TEXT
 import com.example.eyecomforter.Utility.CHANNEL_ID
 import com.example.eyecomforter.Utility.FOREGROUND_SERVICE_NOTIFICATION_ID
 import com.example.eyecomforter.Utility.MAIN_ACTION
 import com.example.eyecomforter.Utility.NEXT_ACTION
-import com.example.eyecomforter.Utility.NOTIFICATION_TEXT
 import com.example.eyecomforter.Utility.NOTIFICATION_TITLE
 import com.example.eyecomforter.Utility.PLAY_ACTION
 import com.example.eyecomforter.Utility.PREV_ACTION
 import com.example.eyecomforter.Utility.START_FOREGROUND_ACTION
 import com.example.eyecomforter.Utility.STOP_FOREGROUND_ACTION
+
 
 @Suppress("DEPRECATION")
 class FilterService : Service() {
@@ -123,28 +120,27 @@ class FilterService : Service() {
                     0
                 )
 
-                val simpleContentView = RemoteViews(this.packageName, R.layout.notification_blf_layout).apply {
-                    setImageViewResource(R.id.notificationLogo, R.mipmap.ic_blf_notification_logo)
-                    setTextViewText(R.id.contextText, NOTIFICATION_TEXT)
-                    setImageViewResource(R.id.btnPause, R.drawable.pause)
-                    setImageViewResource(R.id.btnPlay, R.drawable.play)
-                    setImageViewResource(R.id.btnDelete, R.drawable.cross)
-                }
+                val simpleContentView = RemoteViews(this.packageName, R.layout.notification_blf_layout)
+//                    .apply {
+//                    setImageViewResource(R.id.btnPause, R.drawable.pause)
+//                    setImageViewResource(R.id.btnPlay, R.drawable.play)
+//                    setImageViewResource(R.id.btnDelete, R.drawable.cross)
+//                }
 
-                val expandedView = RemoteViews(this.packageName, R.layout.big_notification_blf_layout).apply {
-                    setImageViewResource(R.id.notificationLogo, R.mipmap.ic_blf_notification_logo)
-                    setTextViewText(R.id.contextText, NOTIFICATION_TEXT)
-                    setImageViewResource(R.id.btnPause, R.drawable.pause)
-                    setImageViewResource(R.id.btnPlay, R.drawable.play)
-                    setImageViewResource(R.id.btnDelete, R.drawable.cross)
-                }
+                val expandedView = RemoteViews(this.packageName, R.layout.big_notification_blf_layout)
+//                    .apply {
+//                    setImageViewResource(R.id.btnPause, R.drawable.pause)
+//                    setImageViewResource(R.id.btnPlay, R.drawable.play)
+//                    setImageViewResource(R.id.btnDelete, R.drawable.cross)
+//                }
 
                 val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle(NOTIFICATION_TITLE)
                     .setSmallIcon(R.mipmap.ic_blf_notification_logo)
-//                    .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                    .setContentIntent(notificationPendingIntent) // the action when tapping the notification
+                    .setStyle(NotificationCompat.DecoratedCustomViewStyle())
                     .setCustomContentView(simpleContentView)
-//                    .setCustomBigContentView(expandedView)
+                    .setCustomBigContentView(expandedView)
                     .build()
 
                 startForeground(
@@ -187,6 +183,27 @@ class FilterService : Service() {
         wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         wm.removeView(mOverlayView)
     }
+
+    /**
+     * Notification click listeners
+     * @param view
+     */
+    fun setListeners(view: RemoteViews) {
+//        val delete = Intent(NOTIFY_DELETE)
+//        val pause = Intent(NOTIFY_PAUSE)
+//        val play = Intent(NOTIFY_PLAY)
+//
+//        val pDelete = PendingIntent.getBroadcast(applicationContext, 0, delete, PendingIntent.FLAG_UPDATE_CURRENT)
+//        view.setOnClickPendingIntent(R.id.btnDelete, pDelete)
+//
+//        val pPause = PendingIntent.getBroadcast(applicationContext, 0, pause, PendingIntent.FLAG_UPDATE_CURRENT)
+//        view.setOnClickPendingIntent(R.id.btnPause, pPause)
+//
+//        val pPlay = PendingIntent.getBroadcast(applicationContext, 0, play, PendingIntent.FLAG_UPDATE_CURRENT)
+//        view.setOnClickPendingIntent(R.id.btnPlay, pPlay)
+
+    }
+
 
     companion object {
         private const val TAG = "FilterService"
