@@ -25,7 +25,7 @@
             android:padding="5dp" >
 
             <TextView
-                android:id="@+id/contextText"
+                android:id="@+id/textSongName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -35,6 +35,18 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20dp" />
 
+            <TextView
+                android:id="@+id/textAlbumName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:gravity="center_vertical"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:selectAllOnFocus="true"
+                android:text="Album Name"
+                android:singleLine="true"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -43,29 +55,43 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal" >
+            <Button
+                android:id="@+id/btnPrevious"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rewind" />
 
             <Button
                 android:id="@+id/btnPause"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="16dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/pause" />
 
             <Button
                 android:id="@+id/btnPlay"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="16dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/play"
                 android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/fast_frw" />
 
             <Button
                 android:id="@+id/btnDelete"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="5dp"
                 android:background="@drawable/cross" />
         </LinearLayout>
+
 
     </LinearLayout>
 

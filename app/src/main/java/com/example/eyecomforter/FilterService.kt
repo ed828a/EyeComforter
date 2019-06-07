@@ -123,35 +123,28 @@ class FilterService : Service() {
                     0
                 )
 
-                val remoteView = RemoteViews(this.packageName, R.layout.notification_blf_layout).apply {
+                val simpleContentView = RemoteViews(this.packageName, R.layout.notification_blf_layout).apply {
                     setImageViewResource(R.id.notificationLogo, R.mipmap.ic_blf_notification_logo)
-                    setTextViewText(R.id.notificationContentView, NOTIFICATION_TEXT)
-                    setImageViewResource(R.id.actionView, R.drawable.ic_pause_black_24dp)
+                    setTextViewText(R.id.contextText, NOTIFICATION_TEXT)
+                    setImageViewResource(R.id.btnPause, R.drawable.pause)
+                    setImageViewResource(R.id.btnPlay, R.drawable.play)
+                    setImageViewResource(R.id.btnDelete, R.drawable.cross)
                 }
 
-
-                val icon = BitmapFactory.decodeResource(
-                    resources,
-                    R.mipmap.ic_blf_notification_logo
-                )
+                val expandedView = RemoteViews(this.packageName, R.layout.big_notification_blf_layout).apply {
+                    setImageViewResource(R.id.notificationLogo, R.mipmap.ic_blf_notification_logo)
+                    setTextViewText(R.id.contextText, NOTIFICATION_TEXT)
+                    setImageViewResource(R.id.btnPause, R.drawable.pause)
+                    setImageViewResource(R.id.btnPlay, R.drawable.play)
+                    setImageViewResource(R.id.btnDelete, R.drawable.cross)
+                }
 
                 val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle(NOTIFICATION_TITLE)
-                    .setTicker(NOTIFICATION_TITLE)
-//                    .setContentText(NOTIFICATION_TEXT)
                     .setSmallIcon(R.mipmap.ic_blf_notification_logo)
-//                    .setContent(remoteView)
-                    .setLargeIcon(
-                        Bitmap.createScaledBitmap(icon, 128, 128, false)
-                    )
-                    .setContentIntent(notificationPendingIntent) // the action when tapping the notification
-                    .setOngoing(true)
-                    // one buttons
-                    .addAction(
-                        android.R.drawable.ic_media_play,
-                        ACTION_TEXT,
-                        pplayIntent
-                    )
+//                    .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                    .setCustomContentView(simpleContentView)
+//                    .setCustomBigContentView(expandedView)
                     .build()
 
                 startForeground(
